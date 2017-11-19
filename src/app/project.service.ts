@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Project } from './project';
-import { PROJECTS } from './mock-projects';
 import { MessageService } from './message.service';
 
 import { Observable } from 'rxjs/Observable';
@@ -20,17 +19,18 @@ export class ProjectService {
     private githubUrl = 'https://api.github.com/users/stshryu/repos';
 
 	getProject(name: string): Observable<Project> {
+        this.clear();
         const projectUrl =`https://api.github.com/repos/stshryu/${name}`;
         return this.http.get<Project>(projectUrl)
             .pipe(
-                tap(_ => this.log(`fetched project name=${name}`)),
+                tap(_ => this.log(`Fetched project name=${name}`)),
                 catchError(this.handleError<Project>(`getProject name=${name}`))
         );
     }
 
 	getProjects(): Observable<Project[]> {
+        this.clear();
 		this.messageService.add('ProjectService: fetched projects');
-		this.messageService.add('Help, I am stuck in this website');
 		return this.http.get<Project[]>(this.githubUrl)
             .pipe(
                 tap(projects => this.log(`fetched heroes`)),
@@ -39,7 +39,12 @@ export class ProjectService {
 	}
 
     private log(message: string) {
-        this.messageService.add('ProjectService: ' + message);
+        this.clear();
+        this.messageService.add('ProjectService Log: ' + message);
+    }
+
+    private clear() {
+        this.messageService.clear();
     }
 
     private handleError<T> (operation = 'operation', result?: T) {
