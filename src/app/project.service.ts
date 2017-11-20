@@ -33,7 +33,7 @@ export class ProjectService {
 		this.messageService.add('ProjectService: fetched projects');
 		return this.http.get<Project[]>(this.githubUrl)
             .pipe(
-                tap(projects => this.log(`fetched heroes`)),
+                tap(projects => this.log(`fetched projects`)),
                 catchError(this.handleError('getProjects', []))
         );
 	}
