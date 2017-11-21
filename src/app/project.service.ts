@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Project } from './project';
+import { ProjectCommit } from './projectCommit';
 import { MessageService } from './message.service';
 
 import { Observable } from 'rxjs/Observable';
@@ -17,6 +18,16 @@ export class ProjectService {
     ) { }
 
     private githubUrl = 'https://api.github.com/users/stshryu/repos';
+
+    getProjectCommitHistory(name: string): Observable<ProjectCommit>{
+        this.clear();
+        const commitHistoryUrl = `https://api.github.com/repos/stshryu/${name}/stats/commit_activity`
+        return this.http.get<ProjectCommit>(commitHistoryUrl)
+            .pipe(
+                tap(_ => this.log(`Fetched commit history for project name=${name}`)),
+                catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`))
+            );
+    }
 
 	getProject(name: string): Observable<Project> {
         this.clear();

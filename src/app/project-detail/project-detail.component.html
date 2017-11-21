@@ -5,6 +5,14 @@
 
     <div><span>Description: </span>{{project.description}}</div>
 
+    <div *ngIf="commits">
+        <h3>Two Week Activity</h3>
+        <div *ngFor="let commit of commits">
+            <p><span>Week: </span>{{commit.week}}</p>
+            <p><span>Commits: </span>{{commit.total}}</p>
+        </div>
+    </div>
+
     <div><span><a href="https://github.com/stshryu/{{project.name}}">
         View on Github
     </a></span></div>

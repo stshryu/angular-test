@@ -18,10 +18,8 @@ export class DashboardComponent implements OnInit {
 	}
 
     sortFavoriteProject(projects: Project[]): Project[]{
-        // Projects to be displayed on Dashboard (Repo ID from github)
         const favoriteProjectID = [111187026, 92342671, 48381471];
         var favoriteProjects = [];
-        // Iterate through projects and return favorite projects
         for(var i = 0; i < projects.length; i++){
             for(var j = 0; j < favoriteProjectID.length; j++){
                 if(projects[i].id == favoriteProjectID[j]){

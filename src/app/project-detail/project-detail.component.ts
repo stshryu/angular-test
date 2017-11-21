@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Project } from '../project';
+import { ProjectCommit } from '../projectCommit';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ProjectService } from '../project.service';
@@ -13,6 +14,7 @@ import { ProjectService } from '../project.service';
 export class ProjectDetailComponent implements OnInit {
 
     @Input() project: Project;
+    @Input() commits: ProjectCommit[];
 
 	constructor(
         private route: ActivatedRoute,
@@ -22,10 +24,23 @@ export class ProjectDetailComponent implements OnInit {
 
 	ngOnInit() {
         this.getProject();
+        this.getActivity();
 	}
 
     goBack(): void {
         this.location.back();
+    }
+
+    getRecentActivity(commits: ProjectCommit): ProjectCommit[]{
+        var recentCommits = [];
+        recentCommits.push(commits[51]);
+        recentCommits.push(commits[50]);
+        return recentCommits;
+    }
+
+    getActivity(): void {
+        const name = this.route.snapshot.paramMap.get('name');
+        this.projectService.getProjectCommitHistory(name).subscribe(commits => this.commits = this.getRecentActivity(commits));
     }
 
     getProject(): void {
