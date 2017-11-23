@@ -32,13 +32,7 @@ export class ProjectService {
             }),
             tap(_ => this.log(`Fetched commit history for project name=${name}`)),
             retryWhen(errors => {
-                let statusCode: number;
-                errors.do(val => statusCode = val);
-                console.log(statusCode);
-                console.log("retrying");
-                if (statusCode == 202)
-                    return errors.delay(3000);
-                return Observable.throw("broke out of retryWhen");
+                return errors.filter(statusCode => statusCode == 202);
             }
             ),
             catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
