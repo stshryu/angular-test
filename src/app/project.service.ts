@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry } from './retry';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { Project } from './project';
 import { ProjectCommit } from './projectCommit';
@@ -8,7 +7,7 @@ import { MessageService } from './message.service';
 
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, retryWhen } from 'rxjs/operators';
 
 @Injectable()
 export class ProjectService {
@@ -23,14 +22,22 @@ export class ProjectService {
     getProjectCommitHistory(name: string): Observable<ProjectCommit>{
         this.clear();
         const commitHistoryUrl = `https://api.github.com/repos/stshryu/${name}/stats/commit_activity`
-        return this.http.get<ProjectCommit>(commitHistoryUrl)
+        return this.http.get<ProjectCommit>(commitHistoryUrl, {observe: 'response'})
             .pipe(
-                map((res: ProjectCommit) => {
-                   console.log(res);
-                   return res;
+                map((res: HttpResponse<ProjectCommit>) => {
+                    if(res.status == 202){
+                        throw Observable.throw(true)
+                    }
+                    return res.body;
                 }),
                 tap(_ => this.log(`Fetched commit history for project name=${name}`)),
-                retry(3, 1000),
+                retryWhen(errors => 
+                    {
+                        console.log(errors);
+                        console.log("retrying");
+                       return errors.delay(3000);
+                    }
+                ),
                 catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
             );
     }
