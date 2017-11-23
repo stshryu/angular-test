@@ -31,15 +31,12 @@ export class ProjectService {
                 return res.body;
             }),
             tap(_ => this.log(`Fetched commit history for project name=${name}`)),
-            retryWhen(error => {
-                var filteredError = error.filter(val => {
-                    return val != 202
-                });
-                if (filteredError.isEmpty){
-                    error.delay(3000);
-                }
-                return Observable.throw(error);
-            }
+            retryWhen(error =>
+                error.map(res => {
+                    if (res == 202)
+                        return res;
+                    throw Observable.throw(res);
+                })
             ),
             catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
         );
