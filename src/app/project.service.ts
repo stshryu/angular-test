@@ -32,8 +32,12 @@ export class ProjectService {
             }),
             tap(_ => this.log(`Fetched commit history for project name=${name}`)),
             retryWhen(error => {
-                if (error.filter(val => val != 202).isEmpty)
+                var filteredError = error.filter(val => {
+                    return val != 202
+                });
+                if (filteredError.isEmpty){
                     error.delay(3000);
+                }
                 return Observable.throw(error);
             }
             ),
