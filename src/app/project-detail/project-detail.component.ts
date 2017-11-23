@@ -31,10 +31,9 @@ export class ProjectDetailComponent implements OnInit {
         this.location.back();
     }
 
-    getRecentActivity(commits: ProjectCommit): ProjectCommit[]{
+    getRecentActivity(commits: ProjectCommit[]): ProjectCommit[]{
         var recentCommits = [];
-        recentCommits.push(commits[51]);
-        recentCommits.push(commits[50]);
+        recentCommits = commits.slice(-2);
         return recentCommits;
     }
 

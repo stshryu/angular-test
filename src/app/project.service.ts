@@ -19,12 +19,12 @@ export class ProjectService {
 
     private githubUrl = 'https://api.github.com/users/stshryu/repos';
 
-    getProjectCommitHistory(name: string): Observable<ProjectCommit> {
+    getProjectCommitHistory(name: string): Observable<ProjectCommit[]> {
         this.clear();
         const commitHistoryUrl = `https://api.github.com/repos/stshryu/${name}/stats/commit_activity`
-        return this.http.get<ProjectCommit>(commitHistoryUrl, { observe: 'response' })
+        return this.http.get<ProjectCommit[]>(commitHistoryUrl, { observe: 'response' })
             .pipe(
-                map((res: HttpResponse<ProjectCommit>) => {
+                map((res: HttpResponse<ProjectCommit[]>) => {
                     if (res.status == 202) {
                         throw res.status;
                     }
@@ -40,7 +40,7 @@ export class ProjectService {
                         })
                     )
                 ),
-                catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
+                catchError(this.handleError<ProjectCommit[]>(`commitHistory name=${name}`)),
             );
     }
 
