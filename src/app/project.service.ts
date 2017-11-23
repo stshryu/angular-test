@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry } from './retry';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { Project } from './project';
 import { ProjectCommit } from './projectCommit';
@@ -8,51 +7,62 @@ import { MessageService } from './message.service';
 
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, retryWhen, filter } from 'rxjs/operators';
 
 @Injectable()
 export class ProjectService {
 
-	constructor(
+    constructor(
         private http: HttpClient,
         private messageService: MessageService
     ) { }
 
     private githubUrl = 'https://api.github.com/users/stshryu/repos';
 
-    getProjectCommitHistory(name: string): Observable<ProjectCommit>{
+    getProjectCommitHistory(name: string): Observable<ProjectCommit> {
         this.clear();
         const commitHistoryUrl = `https://api.github.com/repos/stshryu/${name}/stats/commit_activity`
-        return this.http.get<ProjectCommit>(commitHistoryUrl)
+        return this.http.get<ProjectCommit>(commitHistoryUrl, { observe: 'response' })
             .pipe(
-                map((res: ProjectCommit) => {
-                   console.log(res);
-                   return res;
+                map((res: HttpResponse<ProjectCommit>) => {
+                    if (res.status == 202) {
+                        throw res.status;
+                    }
+                    return res.body;
                 }),
                 tap(_ => this.log(`Fetched commit history for project name=${name}`)),
+                retryWhen(error =>
+                    error.pipe(
+                        map(res => {
+                            if (res == 202)
+                                return res;
+                            throw res;
+                        })
+                    )
+                ),
                 catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
             );
     }
 
-	getProject(name: string): Observable<Project> {
+    getProject(name: string): Observable<Project> {
         this.clear();
-        const projectUrl =`https://api.github.com/repos/stshryu/${name}`;
+        const projectUrl = `https://api.github.com/repos/stshryu/${name}`;
         return this.http.get<Project>(projectUrl)
             .pipe(
-                tap(_ => this.log(`Fetched project name=${name}`)),
-                catchError(this.handleError<Project>(`getProject name=${name}`))
-        );
+            tap(_ => this.log(`Fetched project name=${name}`)),
+            catchError(this.handleError<Project>(`getProject name=${name}`))
+            );
     }
 
-	getProjects(): Observable<Project[]> {
+    getProjects(): Observable<Project[]> {
         this.clear();
-		this.messageService.add('ProjectService: fetched projects');
-		return this.http.get<Project[]>(this.githubUrl)
+        this.messageService.add('ProjectService: fetched projects');
+        return this.http.get<Project[]>(this.githubUrl)
             .pipe(
-                tap(projects => this.log(`fetched projects`)),
-                catchError(this.handleError('getProjects', []))
-        );
-	}
+            tap(projects => this.log(`fetched projects`)),
+            catchError(this.handleError('getProjects', []))
+            );
+    }
 
     private log(message: string) {
         this.clear();
@@ -63,7 +73,7 @@ export class ProjectService {
         this.messageService.clear();
     }
 
-    private handleError<T> (operation = 'operation', result?: T) {
+    private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             console.error(error);
 
