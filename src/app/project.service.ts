@@ -12,56 +12,58 @@ import { catchError, map, tap, retryWhen } from 'rxjs/operators';
 @Injectable()
 export class ProjectService {
 
-	constructor(
+    constructor(
         private http: HttpClient,
         private messageService: MessageService
     ) { }
 
     private githubUrl = 'https://api.github.com/users/stshryu/repos';
 
-    getProjectCommitHistory(name: string): Observable<ProjectCommit>{
+    getProjectCommitHistory(name: string): Observable<ProjectCommit> {
         this.clear();
         const commitHistoryUrl = `https://api.github.com/repos/stshryu/${name}/stats/commit_activity`
-        return this.http.get<ProjectCommit>(commitHistoryUrl, {observe: 'response'})
+        return this.http.get<ProjectCommit>(commitHistoryUrl, { observe: 'response' })
             .pipe(
-                map((res: HttpResponse<ProjectCommit>) => {
-                    if(res.status == 202){
-                        throw Observable.throw(true)
-                    }
-                    return res.body;
-                }),
-                tap(_ => this.log(`Fetched commit history for project name=${name}`)),
-                retryWhen(errors => 
-                    {
-                        errors.subscribe(e => console.log(`value within retryWhen : ${e}`))
-                        console.log(errors);
-                        console.log("retrying");
-                       return errors.delay(3000);
-                    }
-                ),
-                catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
+            map((res: HttpResponse<ProjectCommit>) => {
+                if (res.status == 202) {
+                    throw Observable.throw(res.status)
+                }
+                return res.body;
+            }),
+            tap(_ => this.log(`Fetched commit history for project name=${name}`)),
+            retryWhen(errors => {
+                let statusCode: number;
+                errors.do(val => statusCode = val);
+                console.log(statusCode);
+                console.log("retrying");
+                if (statusCode == 202)
+                    return errors.delay(3000);
+                return Observable.throw("broke out of retryWhen");
+            }
+            ),
+            catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
+        );
+    }
+
+    getProject(name: string): Observable<Project> {
+        this.clear();
+        const projectUrl = `https://api.github.com/repos/stshryu/${name}`;
+        return this.http.get<Project>(projectUrl)
+            .pipe(
+            tap(_ => this.log(`Fetched project name=${name}`)),
+            catchError(this.handleError<Project>(`getProject name=${name}`))
             );
     }
 
-	getProject(name: string): Observable<Project> {
+    getProjects(): Observable<Project[]> {
         this.clear();
-        const projectUrl =`https://api.github.com/repos/stshryu/${name}`;
-        return this.http.get<Project>(projectUrl)
+        this.messageService.add('ProjectService: fetched projects');
+        return this.http.get<Project[]>(this.githubUrl)
             .pipe(
-                tap(_ => this.log(`Fetched project name=${name}`)),
-                catchError(this.handleError<Project>(`getProject name=${name}`))
-        );
+            tap(projects => this.log(`fetched projects`)),
+            catchError(this.handleError('getProjects', []))
+            );
     }
-
-	getProjects(): Observable<Project[]> {
-        this.clear();
-		this.messageService.add('ProjectService: fetched projects');
-		return this.http.get<Project[]>(this.githubUrl)
-            .pipe(
-                tap(projects => this.log(`fetched projects`)),
-                catchError(this.handleError('getProjects', []))
-        );
-	}
 
     private log(message: string) {
         this.clear();
@@ -72,7 +74,7 @@ export class ProjectService {
         this.messageService.clear();
     }
 
-    private handleError<T> (operation = 'operation', result?: T) {
+    private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             console.error(error);
 
