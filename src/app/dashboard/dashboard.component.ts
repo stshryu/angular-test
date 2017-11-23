@@ -18,17 +18,8 @@ export class DashboardComponent implements OnInit {
 	}
 
     sortFavoriteProject(projects: Project[]): Project[]{
-        const favoriteProjectID = [111187026, 92342671, 48381471];
-        var favoriteProjects = [];
-        for(var i = 0; i < projects.length; i++){
-            for(var j = 0; j < favoriteProjectID.length; j++){
-                if(projects[i].id == favoriteProjectID[j]){
-                    favoriteProjects.push(projects[i]);
-                    break;
-                }
-            }
-        }
-        return favoriteProjects;
+        const favoriteProjectID = [111187026, 92342671, 48381471];        
+        return projects.filter(val => favoriteProjectID.includes(val.id));
     }
 
     getProjects(): void {
