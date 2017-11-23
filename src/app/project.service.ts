@@ -25,8 +25,12 @@ export class ProjectService {
         const commitHistoryUrl = `https://api.github.com/repos/stshryu/${name}/stats/commit_activity`
         return this.http.get<ProjectCommit>(commitHistoryUrl)
             .pipe(
-                retry(3, 1000),
+                map((res: ProjectCommit) => {
+                   console.log(res);
+                   return res;
+                }),
                 tap(_ => this.log(`Fetched commit history for project name=${name}`)),
+                retry(3, 1000),
                 catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
             );
     }
