@@ -7,7 +7,7 @@ import { MessageService } from './message.service';
 
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, tap, retryWhen } from 'rxjs/operators';
+import { catchError, map, tap, retryWhen, filter } from 'rxjs/operators';
 
 @Injectable()
 export class ProjectService {
@@ -31,8 +31,10 @@ export class ProjectService {
                 return res.body;
             }),
             tap(_ => this.log(`Fetched commit history for project name=${name}`)),
-            retryWhen(errors => {
-                return errors.filter(statusCode => statusCode == 202);
+            retryWhen(error => {
+                if (error.filter(val => val != 202).isEmpty)
+                    error.delay(3000);
+                return Observable.throw(error);
             }
             ),
             catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
