@@ -32,11 +32,13 @@ export class ProjectService {
             }),
             tap(_ => this.log(`Fetched commit history for project name=${name}`)),
             retryWhen(error =>
-                error.map(res => {
-                    if (res == 202)
-                        return res;
-                    throw Observable.throw(res);
-                })
+                error.pipe(
+                    map(res => {
+                        if (res == 202)
+                            return res;
+                        throw Observable.throw(res);
+                    })
+                )
             ),
             catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
         );
