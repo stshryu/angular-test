@@ -33,6 +33,7 @@ export class ProjectService {
                 tap(_ => this.log(`Fetched commit history for project name=${name}`)),
                 retryWhen(errors => 
                     {
+                        errors.subscribe(e => console.log(`value within retryWhen : ${e}`))
                         console.log(errors);
                         console.log("retrying");
                        return errors.delay(3000);
