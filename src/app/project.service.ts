@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { retry } from './retry';
 
 import { Project } from './project';
 import { ProjectCommit } from './projectCommit';
@@ -22,20 +23,11 @@ export class ProjectService {
     getProjectCommitHistory(name: string): Observable<ProjectCommit>{
         this.clear();
         const commitHistoryUrl = `https://api.github.com/repos/stshryu/${name}/stats/commit_activity`
-        this.http.get(commitHistoryUrl, {observe: 'response'}).subscribe(data => {
-            if(data.status === 202){
-                console.log(data.status);
-                var defaultActivity = new ProjectCommit;
-                defaultActivity.total = 0;
-                defaultActivity.week = '0';
-                defaultActivity.days = [];
-                return defaultActivity;
-            }
-        });
         return this.http.get<ProjectCommit>(commitHistoryUrl)
             .pipe(
+                retry(3, 1000),
                 tap(_ => this.log(`Fetched commit history for project name=${name}`)),
-                catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`))
+                catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
             );
     }
 
