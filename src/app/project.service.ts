@@ -30,7 +30,6 @@ export class ProjectService {
                    return res;
                 }),
                 tap(_ => this.log(`Fetched commit history for project name=${name}`)),
-                retry(3, 1000),
                 catchError(this.handleError<ProjectCommit>(`commitHistory name=${name}`)),
             );
     }
