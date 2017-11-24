@@ -26,13 +26,13 @@ export class ProjectService {
             .pipe(
                 map((res: HttpResponse<ProjectCommit[]>) => {
                     if (res.status == 202) {
-                        throw res.status;
+                        setTimeout(this.throw202Error, 3000);
                     }
                     return res.body;
                 }),
                 tap(_ => this.log(`Fetched commit history for project name=${name}`)),
-                retryWhen(error =>
-                    error.pipe(
+                retryWhen(error => error
+                    .pipe(
                         map(res => {
                             if (res == 202)
                                 return res;
@@ -42,6 +42,10 @@ export class ProjectService {
                 ),
                 catchError(this.handleError<ProjectCommit[]>(`commitHistory name=${name}`)),
             );
+    }
+
+    throw202Error(res: HttpResponse<ProjectCommit[]>): void {
+        throw res.status;
     }
 
     getProject(name: string): Observable<Project> {
