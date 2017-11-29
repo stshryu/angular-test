@@ -28,7 +28,6 @@ export class ProjectService {
                 map((res: HttpResponse<ProjectCommit[]>) => {
                     if (res.status == 202) {
                         throw res.status;
-                        // setTimeout(this.throw202Error, 3000);
                     }
                     return res.body;
                 }),
@@ -47,10 +46,6 @@ export class ProjectService {
                 catchError(this.handleError<ProjectCommit[]>(`commitHistory name=${name}`)),
             );
     }
-
-    // throw202Error(res: HttpResponse<ProjectCommit[]>): void {
-    //     throw res.status;
-    // }
 
     getProject(name: string): Observable<Project> {
         this.clear();
