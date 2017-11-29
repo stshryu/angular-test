@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
@@ -7,7 +8,7 @@ import { MessageService } from './message.service';
 
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, tap, retryWhen, filter } from 'rxjs/operators';
+import { catchError, map, tap, retryWhen, filter, delay, take } from 'rxjs/operators';
 
 @Injectable()
 export class ProjectService {
@@ -26,7 +27,8 @@ export class ProjectService {
             .pipe(
                 map((res: HttpResponse<ProjectCommit[]>) => {
                     if (res.status == 202) {
-                        setTimeout(this.throw202Error, 3000);
+                        throw res.status;
+                        // setTimeout(this.throw202Error, 3000);
                     }
                     return res.body;
                 }),
@@ -37,16 +39,18 @@ export class ProjectService {
                             if (res == 202)
                                 return res;
                             throw res;
-                        })
+                        }),
+                        delay(3000),
+                        take(3)
                     )
                 ),
                 catchError(this.handleError<ProjectCommit[]>(`commitHistory name=${name}`)),
             );
     }
 
-    throw202Error(res: HttpResponse<ProjectCommit[]>): void {
-        throw res.status;
-    }
+    // throw202Error(res: HttpResponse<ProjectCommit[]>): void {
+    //     throw res.status;
+    // }
 
     getProject(name: string): Observable<Project> {
         this.clear();
