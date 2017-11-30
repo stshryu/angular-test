@@ -5,6 +5,10 @@
 
     <div><span>Description: </span>{{project.description}}</div>
 
+    <div *ngIf="!commits">
+        <p>LOADING</p>
+    </div>
+
     <div *ngIf="commits">
         <h3>Two Week Activity</h3>
         <div *ngFor="let commit of commits">
