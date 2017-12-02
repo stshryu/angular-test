@@ -5,12 +5,11 @@
 
     <div><span>Description: </span>{{project.description}}</div>
 
+    <h3>Two Week Activity</h3>
     <div *ngIf="!commits">
-        <p>LOADING</p>
+        <p>Fetching Commit Data...</p>
     </div>
-
     <div *ngIf="commits">
-        <h3>Two Week Activity</h3>
         <div *ngFor="let commit of commits">
             <p><span>Week: </span>{{commit.week}}</p>
             <p><span>Commits: </span>{{commit.total}}</p>
