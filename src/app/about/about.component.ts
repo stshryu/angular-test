@@ -12,7 +12,7 @@ export class AboutComponent implements OnInit {
     a Full Stack Developer, freelance developer, IT specialist and contractor
     for the past couple of years. I've worked on a variety of web platforms and programs, and
     have written in multitudes of languages, ranging from Angular 5 (which this site
-    is written in!) to Python. You'll find my favorite projects below, feel free to click
+    is written in) to Python. You'll find my favorite projects below, feel free to click
     around and look at the things I've worked on!
     `;
 
