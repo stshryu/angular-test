@@ -37,7 +37,15 @@ h4 {
     width: 25%;
 }
 
+.projectName {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .module {
+    position: relative;
     padding: 20px;
     text-align: center;
     color: #eee;
