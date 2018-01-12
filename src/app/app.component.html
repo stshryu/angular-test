@@ -1,8 +1,12 @@
 <h1>Hello World: {{title}}.</h1>
-<nav>
+<app-about></app-about>
+<app-dashboard (detailedProjectName)="pName"></app-dashboard>
+<app-project-detail-inline [projectName]="detailedProjectName"></app-project-detail-inline>
+<app-projects></app-projects>
+<!-- <nav>
     <a routerLink="/dashboard">Dashboard</a>
     <a routerLink="/projects">Projects</a>
     <a routerLink="/contact">Contact Me</a>
-</nav>
-<router-outlet></router-outlet>
+</nav> -->
+<!-- <router-outlet></router-outlet> -->
 <!--app-messages></app-messages add back later maybe?? -->

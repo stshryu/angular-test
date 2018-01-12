@@ -7,14 +7,22 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ProjectDetailInlineComponent implements OnInit {
 
-    @Input() projectName: string;
+    private _name: string = '';
+
+    @Input()
+    set projectName(name: string){
+        this._name = name;
+        console.log('project-detail');
+        console.log(name);
+        console.log(this._name);
+    }
 
     constructor() { }
 
     ngOnInit() {
     }
 
-    getProjectDetails(showDetailedProject: string){
-        console.log(showDetailedProject);
+    ngOnChanges(name: string){
+        console.log(name);
     }
 }

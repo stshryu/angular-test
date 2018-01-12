@@ -9,7 +9,7 @@ import { ProjectService } from '../project.service';
 })
 export class DashboardComponent implements OnInit {
 
-	@Output() showDetailedProject: EventEmitter<string> = new EventEmitter<string>();
+	@Output() detailedProjectName: EventEmitter<string> = new EventEmitter<string>();
 
     projects: Project[] = [];
 
@@ -29,6 +29,8 @@ export class DashboardComponent implements OnInit {
     }
 
 	getDetailedProject(name: string){
-		this.showDetailedProject.emit(name);
+		this.detailedProjectName.emit(name);
+		console.log('dashboard');
+		console.log(name);
 	}
 }
