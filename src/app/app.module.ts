@@ -13,7 +13,7 @@ import { AppRoutingModule } from './/app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
-
+import { ProjectDetailInlineComponent } from './project-detail-inline/project-detail-inline.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,8 @@ import { ContactComponent } from './contact/contact.component';
     MessagesComponent,
     DashboardComponent,
     AboutComponent,
-    ContactComponent
+    ContactComponent,
+    ProjectDetailInlineComponent
   ],
   imports: [
     BrowserModule,

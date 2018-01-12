@@ -20,5 +20,4 @@ export class ProjectsComponent implements OnInit {
     getProjects(): void {
         this.projectService.getProjects().subscribe(projects => this.projects = projects);
     }
-
 }

@@ -1,10 +1,14 @@
 <app-about></app-about>
 <h3>Top Projects</h3>
+<p>Here are some of my favorite projects, if you'd like click on them to find out more information. Otherwise check out the list below
+    for a full list of projects that I've worked on.</p>
 <div class="grid grid-pad">
-    <a *ngFor="let project of projects" class="col-1-4" routerLink="/detail/{{project.name}}">
+    <a *ngFor="let project of projects" class="col-1-4" (click)="getDetailedProject(project.name)">
         <div class="module projects">
             <img src="https://identicon-api.herokuapp.com/{{project.name}}/80?format=png" alt="{{project.name}}">
             <div class="projectName"><h4>{{project.name}}</h4></div>
         </div>
     </a>
+    <app-project-detail-inline></app-project-detail-inline>
 </div>
+<app-projects></app-projects>
