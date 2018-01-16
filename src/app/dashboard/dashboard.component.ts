@@ -30,7 +30,5 @@ export class DashboardComponent implements OnInit {
 
 	getDetailedProject(name: string){
 		this.detailedProjectName.emit(name);
-		console.log('dashboard');
-		console.log(name);
 	}
 }

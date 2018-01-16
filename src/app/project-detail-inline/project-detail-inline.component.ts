@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 
 @Component({
     selector: 'app-project-detail-inline',
@@ -8,13 +8,12 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ProjectDetailInlineComponent implements OnInit {
 
     private _name: string = '';
+    private toggleShowing: boolean = false;
 
     @Input()
     set projectName(name: string){
         this._name = name;
-        console.log('project-detail');
-        console.log(name);
-        console.log(this._name);
+        this.showDetailedProject(this._name);
     }
 
     constructor() { }
@@ -22,7 +21,7 @@ export class ProjectDetailInlineComponent implements OnInit {
     ngOnInit() {
     }
 
-    ngOnChanges(name: string){
-        console.log(name);
+    showDetailedProject(name: string){
+
     }
 }
