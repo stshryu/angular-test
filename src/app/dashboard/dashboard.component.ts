@@ -11,6 +11,8 @@ export class DashboardComponent implements OnInit {
 
 	@Output() detailedProjectName: EventEmitter<string> = new EventEmitter<string>();
 
+	private name: string = '';
+
     projects: Project[] = [];
 
 	constructor(private projectService: ProjectService) { }
@@ -29,6 +31,12 @@ export class DashboardComponent implements OnInit {
     }
 
 	getDetailedProject(name: string){
-		this.detailedProjectName.emit(name);
+		if(this.name == name){
+			this.name = '';
+			this.detailedProjectName.emit('');
+		} else {
+			this.name = name;
+			this.detailedProjectName.emit(name);
+		}
 	}
 }
