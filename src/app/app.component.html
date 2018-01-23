@@ -1,9 +1,22 @@
-<h1>Hello World: {{title}}.</h1>
-<app-about></app-about>
-<app-dashboard (detailedProjectName)="pName=$event"></app-dashboard>
-<app-project-detail-inline [projectName]="pName"></app-project-detail-inline>
-<app-projects></app-projects>
-<router-outlet></router-outlet>
+<h1>Seunghyun (Steve) Yoo</h1>
+<img class="profile" src="./assets/images/profileBanner.png" alt="profile">
+<p class="tagline">Software Developer, Graphics Designer</p>
+<div class="about">
+    <app-about></app-about>
+</div>
+<div class="dashboard">
+    <app-dashboard (detailedProjectName)="pName=$event"></app-dashboard>
+</div>
+<div class="projectsDetail">
+    <app-project-detail-inline [projectName]="pName"></app-project-detail-inline>
+</div>
+<div class="projects">
+    <app-projects></app-projects>
+</div>
+<div class="contact">
+    <app-contact></app-contact>
+</div>
+<!-- <router-outlet></router-outlet> -->
 <!-- <nav>
     <a routerLink="/dashboard">Dashboard</a>
     <a routerLink="/projects">Projects</a>

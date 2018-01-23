@@ -27,6 +27,7 @@ h3 {
 
 h4 {
     position: relative;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .grid {
@@ -51,14 +52,13 @@ h4 {
     color: #eee;
     max-height: 120px;
     min-width: 120px;
-    background-color: #607D8B;
+    background-color: #bfc9ca;
     border-radius: 2px;
 }
 
 .module:hover {
     background-color: #EEE;
     cursor: pointer;
-    color: #607d8b;
 }
 
 .grid-pad {

@@ -1,1 +1,71 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: "Bitter-Regular";
+    src: url("./fonts/Bitter/Bitter-Regular.ttf") format("ttf"),
+    url("./fonts/Bitter/Bitter-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Bitter-Italic";
+    src: url("./fonts/Bitter/Bitter-Italic.ttf") format("ttf"),
+    url("./fonts/Bitter/Bitter-Italic.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Bitter-Bold";
+    src: url("./fonts/Bitter/Bitter-Bold.ttf") format("ttf"),
+    url("./fonts/Bitter/Bitter-Bold.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Roboto-Light";
+    src: url("./fonts/Roboto/Roboto-Light.ttf") format("ttf"),
+    url("./fonts/Roboto/Roboto-Light.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Roboto-Black";
+    src: url("./fonts/Roboto/Roboto-Black.ttf") format("ttf"),
+    url("./fonts/Roboto/Roboto-Black.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Roboto-Medium";
+    src: url("./fonts/Roboto/Roboto-Medium.ttf") format("ttf"),
+    url("./fonts/Roboto/Roboto-Medium.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Roboto-Regular";
+    src: url("./fonts/Roboto/Roboto-Regular.ttf") format("ttf"),
+    url("./fonts/Roboto/Roboto-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Garamond-Regular";
+    src: url("./fonts/Garamond/CormorantGaramond-Regular.ttf") format("ttf"),
+    url("./fonts/Garamond/CormorantGaramond-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Garamond-Italic";
+    src: url("./fonts/Garamond/CormorantGaramond-Italic.ttf") format("ttf"),
+    url("./fonts/Garamond/CormorantGaramond-Italic.woff") format("woff");
+}
+
+@font-face {
+    font-family: "WorkSans-Regular";
+    src: url("./fonts/Work/WorkSans-Regular.ttf") format("ttf"),
+    url("./fonts/Work/WorkSans-Regular.woff") format("woff");
+}
+
+.widthControl {
+    width: 50%;
+    margin: 0 auto;
+}
+
+h3, p, a {
+    text-align: center;
+    margin-bottom: 0;
+    font-family: Roboto-Light;
+}
