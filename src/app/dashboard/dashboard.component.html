@@ -1,13 +1,25 @@
 <div class="widthControl">
-    <h3>Top Projects</h3>
+    <h3>Favorite Projects</h3>
     <p>Here are some of my favorite projects, if you'd like click on them to find out more information. Otherwise check out the list below
         for a full list of projects that I've worked on.</p>
-    <div class="grid grid-pad">
-        <a *ngFor="let project of projects" class="col-1-4" (click)="getDetailedProject(project.name)">
-            <div class="module projects">
-                <img src="https://identicon-api.herokuapp.com/{{project.name}}/80?format=png" alt="{{project.name}}">
-                <div class="projectName"><h4>{{project.name}}</h4></div>
-            </div>
-        </a>
+    <div class="projectList">
+        <ul [ngClass]="{isShowing: isShowing}" class="favoriteProjects">
+            <li *ngFor="let project of projects" (click)="getDetailedProject(project.name)">
+                <button class="projectName"><span>{{project.name}}</span></button>
+            </li>
+        </ul>
     </div>
+    <!-- <div class="projectList">
+        <ul [ngClass]="{'isShowing': isShowing}" class="favoriteProjects">
+            <li class="list" (click)="getDetailedProject(angular-test)">
+                <a class="projectName"><h4>angular-test</h4></a>
+            </li>
+            <li class="list" (click)="getDetailedProject(smlg-build)">
+                <a class="projectName"><h4>smlg-build</h4></a>
+            </li>
+            <li class="list" (click)="getDetailedProject(steebot)">
+                <a class="projectName"><h4>steebot</h4></a>
+            </li>
+        </ul>
+    </div> -->
 </div>

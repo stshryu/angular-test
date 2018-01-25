@@ -10,6 +10,7 @@ import { ProjectService } from '../project.service';
 export class DashboardComponent implements OnInit {
 
 	@Output() detailedProjectName: EventEmitter<string> = new EventEmitter<string>();
+	isShowing: boolean = false;
 
 	private name: string = '';
 
@@ -22,7 +23,7 @@ export class DashboardComponent implements OnInit {
 	}
 
     sortFavoriteProject(projects: Project[]): Project[]{
-        const favoriteProjectID = [111187026, 92342671, 48381471, 115966609];
+        const favoriteProjectID = [111187026, 92342671, 115966609];
         return projects.filter(val => favoriteProjectID.includes(val.id));
     }
 
@@ -34,9 +35,11 @@ export class DashboardComponent implements OnInit {
 		if(this.name == name){
 			this.name = '';
 			this.detailedProjectName.emit('');
+			this.isShowing = false;
 		} else {
 			this.name = name;
 			this.detailedProjectName.emit(name);
+			this.isShowing = true;
 		}
 	}
 }

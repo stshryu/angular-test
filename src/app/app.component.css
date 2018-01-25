@@ -1,14 +1,39 @@
 /* AppComponent's private CSS styles */
+
+.bg  {
+    position: absolute;
+    width: 100%;
+    height: 500px;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
 h1 {
     text-align: center;
     font-weight: normal;
     margin-bottom: 0;
+    color: #FFF;
     font-family: Garamond-Regular;
 }
 
 p {
+    color: #FFF;
     font-family: Garamond-Italic;
     font-size: 1.2em;
+}
+
+.about {
+    margin-top: 200px;
+}
+
+.dashboard, .projects, .contact {
+    margin-top: 200px;
+}
+
+.projectsDetail {
+    margin-top: 50px;
+    transition: all .25
 }
 
 .profile {
